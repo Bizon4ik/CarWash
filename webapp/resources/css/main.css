@@ -1,0 +1,76 @@
+@import "css_reset.css" screen;
+
+body{
+
+}
+
+.row {
+	width: 100%;
+	margin: 0;
+}
+
+.navbar {
+	border-radius:0px;
+}
+
+#address{
+	padding: 15px;
+	line-height: 20px;
+ 	color: #00FFFF;
+}
+
+.navbar-nav .active {
+	font-size: 1.2em;
+}
+
+.boksNumber {
+	font-size: 1.5em;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.boksContext {
+	width: 100%;
+	border: 1px solid black;
+	box-shadow:0 0 10px rgba(0,0,0,0.5); 
+	padding-bottom: 1.0em;
+}
+
+.boksContextRows{
+	padding-top: 1.0em;
+
+}
+
+#carClassDescription {
+	color: grey;
+	text-align: center;
+	bottom: auto;
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+.topLine {
+	margin-top: 0.5em;
+	padding-top: 0.5em;
+	border-top: 1px solid black;
+
+}
+
+.boldFont{
+	font-weight: bold;
+	margin-bottom: 1.0em;
+}
+
+.services {
+	border: 1px solid #B0B0B0 ;
+	background-color: #B0B0B0 ;
+	border-radius: 5px;
+	margin-top: 0.5em;
+
+}
+
+.btn-group-justified {
+	margin-top: 1.0em;
+
+}
+
