@@ -1,9 +1,9 @@
 package biz.podoliako.carwash.dao.impl;
 
 import biz.podoliako.carwash.dao.CarWashDao;
-import biz.podoliako.carwash.dao.pojo.CarWash;
+import biz.podoliako.carwash.models.entity.CarWash;
+import biz.podoliako.carwash.services.impl.ConnectDB;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,14 @@ import java.util.List;
 public class CarWashDaoImpl implements CarWashDao {
     public final static String CAR_WASH_TABLE = "car_wash";
 
-    private Connection connection = null;
+    private Connection conn = null;
+
+    @Autowired
+    ConnectDB connectDB;
 
     @Autowired
     public CarWashDaoImpl(ConnectDB connectDB) throws SQLException, NamingException {
-        this.connection = connectDB.getPoolConnection();
+        this.conn = connectDB.getPoolConnection();
     }
 
     @Override
@@ -30,7 +33,7 @@ public class CarWashDaoImpl implements CarWashDao {
         String query = "INSERT INTO " + CAR_WASH_TABLE +
                        "(name, address, box_amount, phone_number, date_of_creation, owner_id, start_shift, finish_shift) VALUES " +
                        "(  ?,      ?,       ?,             ?,              ?,           ?,         ?,            ?     )" ;
-        PreparedStatement ps = connection.prepareStatement(query);
+        PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, carWash.getName());
         ps.setString(2, carWash.getAddress());
         ps.setInt(3, carWash.getBoxAmount());
@@ -48,7 +51,7 @@ public class CarWashDaoImpl implements CarWashDao {
     public void deleteCarWash(Integer carWashId) throws SQLException {
         String query = "DELETE FROM "+ CAR_WASH_TABLE + " WHERE id= ?";
 
-        PreparedStatement statement = connection.prepareStatement(query);
+        PreparedStatement statement = conn.prepareStatement(query);
         statement.setInt(1, carWashId);
         statement.execute();
 
@@ -64,7 +67,7 @@ public class CarWashDaoImpl implements CarWashDao {
         Boolean result = false;
         String query = "SELECT * FROM " + CAR_WASH_TABLE + " WHERE name = ?";
 
-        PreparedStatement ps = connection.prepareStatement(query);
+        PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, name);
         ResultSet rs = ps.executeQuery();
 
@@ -74,24 +77,39 @@ public class CarWashDaoImpl implements CarWashDao {
     }
 
     @Override
-    public CarWash selectCarWash(Integer id) throws SQLException {
+    public CarWash selectCarWash(Integer id) throws SQLException, NamingException {
+        Connection connection = null;
+        PreparedStatement ps = null;
         CarWash carWash = new CarWash();
 
-        String query = "SELECT * FROM " + CAR_WASH_TABLE + " WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, id);
+        try {
+            connection = connectDB.getPoolConnection();
 
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            carWash.setId(rs.getInt("id"));
-            carWash.setName(rs.getString("name"));
-            carWash.setAddress(rs.getString("address"));
-            carWash.setBoxAmount(rs.getInt("box_amount"));
-            carWash.setPhoneNumber(rs.getString("phone_number"));
-            carWash.setDateOfCreation(rs.getTimestamp("date_of_creation"));
-            carWash.setOwnerId(rs.getInt("owner_id"));
-            carWash.setStartDayShift(rs.getTime("start_shift"));
-            carWash.setFinishDayShift(rs.getTime("finish_shift"));
+            String query = "SELECT * FROM " + CAR_WASH_TABLE + " WHERE id = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                carWash.setId(rs.getInt("id"));
+                carWash.setName(rs.getString("name"));
+                carWash.setAddress(rs.getString("address"));
+                carWash.setBoxAmount(rs.getInt("box_amount"));
+                carWash.setPhoneNumber(rs.getString("phone_number"));
+                carWash.setDateOfCreation(rs.getTimestamp("date_of_creation"));
+                carWash.setOwnerId(rs.getInt("owner_id"));
+                carWash.setStartDayShift(rs.getTime("start_shift"));
+                carWash.setFinishDayShift(rs.getTime("finish_shift"));
+            }
+
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+
+            if (connection != null) {
+                connection.close();
+            }
         }
 
         return carWash;
@@ -99,9 +117,9 @@ public class CarWashDaoImpl implements CarWashDao {
 
     @Override
     public List<CarWash> selectAllCarWash(Integer ownerId) throws SQLException {
-        List<CarWash> carWashList = new ArrayList<CarWash>();
-        String query = "SELECT * FROM " + CAR_WASH_TABLE + " WHERE owner_id = " + ownerId;
-        Statement statement = connection.createStatement();
+        List<CarWash> carWashList = new ArrayList<>();
+        String query = "SELECT * FROM " + CAR_WASH_TABLE + " WHERE owner_id = " + ownerId + " ORDER by name";
+        Statement statement = conn.createStatement();
         ResultSet rs = statement.executeQuery(query);
 
         while (rs.next()) {

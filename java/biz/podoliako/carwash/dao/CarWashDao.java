@@ -1,13 +1,12 @@
 package biz.podoliako.carwash.dao;
 
-import biz.podoliako.carwash.dao.pojo.CarWash;
+import biz.podoliako.carwash.models.entity.CarWash;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by bizon4ik on 15.06.15.
- */
+
 public interface CarWashDao {
     public final static Integer NAME_MAX_LENGTH = 50;
     public final static Integer ADDRESS_MAX_LENGTH = 200;
@@ -22,7 +21,8 @@ public interface CarWashDao {
 
     public boolean isCarWashNameExist(String name) throws SQLException;
 
-    public CarWash selectCarWash(Integer id) throws SQLException;
+    public CarWash selectCarWash(Integer id) throws SQLException, NamingException;
 
     public List<CarWash> selectAllCarWash(Integer ownerId) throws SQLException;
+
 }

@@ -20,7 +20,6 @@ public class CharsetFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain       next)
             throws IOException, ServletException
     {
-        System.out.println("name= " + (HttpServletRequest) request.getAttribute("name"));
         if(null == request.getCharacterEncoding())
             request.setCharacterEncoding(encoding);
 

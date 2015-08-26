@@ -1,9 +1,8 @@
 package biz.podoliako.carwash.filters;
 
 
-import biz.podoliako.carwash.models.AuthorizationModel;
-import biz.podoliako.carwash.models.pojo.Authorization;
-
+import biz.podoliako.carwash.models.entity.Role;
+import biz.podoliako.carwash.models.entity.User;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,9 +21,9 @@ public class OwnerFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
 
-        Authorization authorization = (Authorization) session.getAttribute("authorization");
+        User user = (User) session.getAttribute("CurrentCarWashUser");
 
-        if (authorization.getCarWashOwnerId() == null) {
+        if (user.getRole() != Role.owner) {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/login");
             requestDispatcher.forward(req, response);
         }else {

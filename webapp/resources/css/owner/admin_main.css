@@ -1,0 +1,276 @@
+@import "../css_reset.css" screen;
+
+body{
+	height: 100%;
+	
+	height: auto;
+	background-color: #fff;
+
+}
+
+#body{
+	padding-bottom: 50px;
+}
+
+.row {
+	width: 100%;
+	margin: 0;
+}
+.form-control {
+	font-size: 1.5em;
+	padding:0;
+	text-align: center;
+	height: 1.5em;
+}
+
+.form-group label {
+	font-size: 1.5em;
+}
+
+.btn {
+	padding: 6px 1px;
+
+	font-size: 1.5em;
+}
+
+.navbar {
+	border-radius: 0;
+}
+
+.dropdown a, .active a{
+	font-size: 1.5em;
+	padding: 6px 1px;
+
+}
+
+.dropdown ul {
+	text-align: left;
+}
+
+.dropdown ul .dropdown-right {
+	text-align: right;
+}
+
+#userName sub {
+	display: inline-block;
+	vertical-align: middle;
+	padding:0 15px;
+	line-height: 1.5em;
+	color: #00FFFF;
+	font-size: 1.5em;
+}
+
+#logout a{
+	font-size: 1.5em;
+	padding-top:15px;
+	height: 1.5em;
+}
+
+.userTitle {
+	font-weight: 700;
+	margin-bottom: 0.5em;
+	text-decoration: underline;
+	font-size: 1.5em;
+	color:#2E8B57;
+
+}
+
+sup {
+	top:0;
+}
+
+.asterisk{
+	color: darkgray;
+}
+
+.errorMessage{
+	color: #ED7A7A;
+	font-size: 1.5em;
+}
+
+.globarError {
+	padding: 0.5em;
+	font-size: 1.5em;
+}
+
+.globalMsg {
+	padding: 0.5em;
+	font-size: 1.5em;
+}
+
+.table {
+	font-size: 1.0em;
+}
+
+.table th {
+	font-weight: 600;
+}
+
+.bottomLine {
+	border-bottom: 1px solid #B0B0B0;
+	padding-bottom: 0.5em;
+}
+
+caption {
+	font-size: 1.5em;
+	color: #000000;
+	font-weight: 800;
+}
+
+td .firstLetterUppercase {
+	display: inline-block;
+}
+
+.firstLetterUppercase:first-letter {
+	text-transform: uppercase;
+}
+
+
+@media (max-width: 1170px ) {
+	.dropdown a, .active a{
+		font-size: 2em;
+		height: 2em;
+	}
+
+	#userName sub {
+		line-height: 2em;
+		font-size: 2em;
+	}
+
+	#logout a{
+		font-size: 2em;
+		height: 2em;
+	}
+
+	.userTitle {
+		font-size: 2em;
+	}
+
+	.form-group label {
+		font-size: 2em;
+	}
+
+	.btn {
+		font-size: 2em;
+	}
+
+	caption {
+		font-size: 2em;
+	}
+}
+
+/*
+.form-control {
+	padding: 6px 1px;
+	text-align: center;
+}
+
+.btn {
+	padding: 6px 1px;
+}
+
+
+
+
+.message {
+	margin: 0 0 0.5em 0;
+	padding: 0.5em;
+	font-size: 1.5em;
+	font-weight: bold;
+	float: left;
+	border-radius: 5px;
+}
+
+.green {
+	color :#98E090;
+}
+.error{
+	 color: #ED7A7A;
+ }
+
+#deleteButtomCarWash {
+	float:right;
+	min-width: 10%;
+}
+
+.deleteButtom {
+	float:right;
+	min-width: 10%;
+}
+
+
+
+.categoryName {
+	color: cornflowerblue;
+	font-weight: 500;
+	font-size: 1.1em;
+}
+
+.boksNumber {
+	font-size: 1.5em;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.boksContext {
+	width: 100%;
+	border: 1px solid black;
+	box-shadow:0 0 10px rgba(0,0,0,0.5); 
+	padding-bottom: 1.0em;
+}
+
+.boksContextRows{
+	margin-top: 1.0em;
+
+}
+
+#carClassDescription {
+	color: grey;
+	text-align: center;
+	bottom: auto;
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+.carClassDescription {
+	color: grey;
+	text-align: center;
+	bottom: auto;
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+.topLine {
+	margin-top: 0.5em;
+	padding-top: 0.5em;
+	border-top: 1px solid black;
+
+}
+
+.boldFont{
+	font-weight: bold;
+	margin-bottom: 1.0em;
+}
+
+.services {
+	border: 1px solid #B0B0B0 ;
+	background-color: #B0B0B0 ;
+	border-radius: 5px;
+	margin-top: 0.5em;
+
+}
+
+.btn-group-justified {
+	margin-top: 1.0em;
+
+}
+
+#serviceButton {
+	padding: 0;
+	margin-top: 0.5em;
+}
+
+.fat {
+	font-weight: 600;
+}
+*/

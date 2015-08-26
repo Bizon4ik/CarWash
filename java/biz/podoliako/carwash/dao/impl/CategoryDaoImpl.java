@@ -1,8 +1,9 @@
 package biz.podoliako.carwash.dao.impl;
 
 import biz.podoliako.carwash.dao.CategoryDao;
-import biz.podoliako.carwash.dao.pojo.CarWash;
-import biz.podoliako.carwash.dao.pojo.Category;
+import biz.podoliako.carwash.models.entity.CarWash;
+import biz.podoliako.carwash.models.entity.Category;
+import biz.podoliako.carwash.services.impl.ConnectDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

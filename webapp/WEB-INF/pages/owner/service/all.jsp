@@ -23,6 +23,8 @@
         <tr>
           <th>№</th>
           <th>Имя</th>
+          <th>Исчесляемая</th>
+          <th>Доп цена</th>
           <th>Создана</th>
           <th>id</th>
           <c:if test="${delete != null}">
@@ -35,6 +37,8 @@
           <tr>
             <td>${loop.count}</td>
             <td>${row.name}</td>
+            <td>${row.countable ? "+" : "-"}</td>
+            <td>${row.additionPrice ? "+" : "-"}</td>
             <td>
               <fmt:formatDate value="${row.dateOfCreation}" pattern="HH:mm dd-MM-yyyy" />
             </td>

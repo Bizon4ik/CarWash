@@ -1,7 +1,7 @@
 package biz.podoliako.carwash.dao;
 
-import biz.podoliako.carwash.dao.pojo.CarWashService;
-import biz.podoliako.carwash.dao.pojo.ServiceName;
+import biz.podoliako.carwash.models.entity.CarWashService;
+import biz.podoliako.carwash.models.entity.ServiceName;
 
 import java.sql.SQLException;
 import java.util.Date;

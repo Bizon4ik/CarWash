@@ -2,10 +2,11 @@ package biz.podoliako.carwash.dao.impl;
 
 
 import biz.podoliako.carwash.dao.ServiceDao;
-import biz.podoliako.carwash.dao.pojo.CarWash;
-import biz.podoliako.carwash.dao.pojo.CarWashService;
-import biz.podoliako.carwash.dao.pojo.Category;
-import biz.podoliako.carwash.dao.pojo.ServiceName;
+import biz.podoliako.carwash.models.entity.CarWash;
+import biz.podoliako.carwash.models.entity.CarWashService;
+import biz.podoliako.carwash.models.entity.Category;
+import biz.podoliako.carwash.models.entity.ServiceName;
+import biz.podoliako.carwash.services.impl.ConnectDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 @Component("ServiceDao")
@@ -36,13 +36,16 @@ public class ServiceDaoImpl implements ServiceDao{
     @Override
     public void addServiceName(ServiceName serviceName) throws SQLException {
         String query = "INSERT INTO " + SERVICE_NAME_TABLE + " " +
-                       "(name, date_of_creation, owner_id) VALUES " +
-                       "(  ?,           ?,          ?    )";
+                       "(name, date_of_creation, owner_id, countable, addition_price, created_by) VALUES " +
+                       "(  ?,           ?,          ?,         ?,           ?,          ?    )";
 
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, serviceName.getName());
         ps.setObject(2, serviceName.getDateOfCreation());
         ps.setInt(3, serviceName.getOwnerId());
+        ps.setBoolean(4, serviceName.isCountable());
+        ps.setBoolean(5, serviceName.isAdditionPrice());
+        ps.setInt(6, serviceName.getCreatedBy());
 
         ps.execute();
 
@@ -77,9 +80,12 @@ public class ServiceDaoImpl implements ServiceDao{
             ServiceName serviceName = new ServiceName();
             serviceName.setId(rs.getInt("id"));
             serviceName.setName(rs.getString("name"));
-            serviceName.setDateOfCreation(rs.getDate("date_of_creation"));
-            serviceName.setDateOfDelete(rs.getDate("date_of_delete"));
+            serviceName.setDateOfCreation(rs.getTimestamp("date_of_creation"));
+            serviceName.setDateOfDelete(rs.getTimestamp("date_of_delete"));
             serviceName.setOwnerId(rs.getInt("owner_id"));
+            serviceName.setCountable(rs.getBoolean("countable"));
+            serviceName.setAdditionPrice(rs.getBoolean("addition_price"));
+            serviceName.setCreatedBy(rs.getInt("created_by"));
 
             serviceNameList.add(serviceName);
         }

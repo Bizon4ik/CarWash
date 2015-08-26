@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
   </c:if>
 
-  <link rel="stylesheet" type="text/css" href="/resources/css/admin/admin_main.css" />
+  <link rel="stylesheet" type="text/css" href="/resources/css/owner/admin_main.css" />
 
   <title>CarWash</title>
 </head>
@@ -22,7 +22,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <ul class="nav navbar-nav">
-      <li> <div id="userName"><sub>${authorization.userName}</sub></div></li>
+      <li> <div id="userName"><sub>${sessionScope.CurrentCarWashUser.name}</sub></div></li>
 
       <li class="active"> <a href="/owner/main">Главная</a> </li>
 
@@ -51,9 +51,12 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Пользователи<span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/adminMain/User?action=all">Все пользователи</a></li>
-          <li><a href="/adminMain/User?action=add">Добавить</a></li>
-          <li><a href="/adminMain/User?action=delete">Удалить</a></li>
+          <li><a href="/owner/user/all">Все пользователи</a></li>
+          <li><a href="/adminMain/User?action=delete">Удалить пользователя</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="/owner/user/addWasherMan">Добавить мойщика</a></li>
+          <li><a href="/owner/user/addAdmin">Добавить администратора</a></li>
+          <li><a href="/owner/user/add">Добавить партнера</a></li>
         </ul>
       </li>
 
@@ -64,8 +67,8 @@
           <li><a href="/owner/category/all">Все категории</a></li>
           <li><a href="/owner/category/delete">Удалить категории</a></li>
           <li role="separator" class="divider"></li>
-          <li><a class="dropdown-right" href="/adminMain/carCategoty?action=allcar">Все АвтоБренды</a></li>
-          <li><a class="dropdown-right" href="/adminMain/carCategoty?action=addCar">Добавить АвтоБренд</a></li>
+          <li><a class="dropdown-right" href="/owner/carbrand/all">Все АвтоБренды</a></li>
+          <li><a class="dropdown-right" href="/owner/carbrand/add">Добавить АвтоБренд</a></li>
           <li><a class="dropdown-right" href="/adminMain/carCategoty?action=deletecar">Удалить АвтоБренд</a></li>
         </ul>
       </li>
@@ -81,7 +84,7 @@
 
     <ul class="nav navbar-nav navbar-right" id="logout">
       <li>
-        <a href="/login?exit=1" role="button" aria-expanded="false">Выход</a>
+        <a href="/logout" role="button" aria-expanded="false">Выход</a>
       </li>
     </ul>
 

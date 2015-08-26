@@ -1,10 +1,10 @@
 package biz.podoliako.carwash.controllers.owner;
 
-import biz.podoliako.carwash.dao.pojo.Category;
-import biz.podoliako.carwash.models.CarWashModel;
-import biz.podoliako.carwash.models.CategoryModel;
-import biz.podoliako.carwash.models.pojo.Authorization;
+import biz.podoliako.carwash.models.entity.Category;
+import biz.podoliako.carwash.services.CategoryService;
+import biz.podoliako.carwash.models.entity.User;
 import biz.podoliako.carwash.models.pojo.CategoryFormErrors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/owner/category")
-@SessionAttributes("authorization")
+@SessionAttributes("CurrentCarWashUser")
 public class CarCategoryController{
+
+    @Autowired
+    CategoryService categoryService;
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addGet(){
@@ -26,15 +29,12 @@ public class CarCategoryController{
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addPost(@ModelAttribute("category") Category category,
-                          @ModelAttribute("authorization") Authorization authorization,
+                          @ModelAttribute("CurrentCarWashUser") User authorization,
                           Model model ) {
         try {
-            category.setOwnerId(authorization.getOwnerid());
+            category.setOwnerId(authorization.getOwnerId());
 
-            ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-            CategoryModel categoryModel = context.getBean("CategoryModel", CategoryModel.class);
-
-            CategoryFormErrors categoryFormErrors = categoryModel.validateCategoryParam(category);
+            CategoryFormErrors categoryFormErrors = categoryService.validateCategoryParam(category);
 
             if (categoryFormErrors.isHasErrors()) {
                 model.addAttribute("categoryFormErrors", categoryFormErrors);
@@ -42,7 +42,7 @@ public class CarCategoryController{
             }
 
 
-                categoryModel.addCategory(category);
+                categoryService.addCategory(category);
         } catch (Exception e) {
             model.addAttribute("globalError", e.getMessage());
             return "owner/category/add";
@@ -53,14 +53,11 @@ public class CarCategoryController{
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String allGet (@ModelAttribute("authorization") Authorization authorization,
+    public String allGet (@ModelAttribute("CurrentCarWashUser") User authorization,
                           Model model ) {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CategoryModel categoryModel = context.getBean("CategoryModel", CategoryModel.class);
-
         try {
-            List<Category> categoryList = categoryModel.selectAllCategory(authorization.getOwnerid());
+            List<Category> categoryList = categoryService.selectAllCategory(authorization.getOwnerId());
             model.addAttribute("categoryList", categoryList);
         } catch (SQLException e) {
             model.addAttribute("globalError", e.getMessage());
@@ -71,15 +68,12 @@ public class CarCategoryController{
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String deleteGet(@ModelAttribute("authorization") Authorization authorization,
+    public String deleteGet(@ModelAttribute("CurrentCarWashUser") User authorization,
                             Model model)throws SQLException {
 
         model.addAttribute("delete", new Boolean(true));
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CategoryModel categoryModel = context.getBean("CategoryModel", CategoryModel.class);
-
-        List<Category> categoryList = categoryModel.selectAllCategory(authorization.getOwnerid());
+        List<Category> categoryList = categoryService.selectAllCategory(authorization.getOwnerId());
         model.addAttribute("categoryList", categoryList);
 
         return "owner/category/all";
@@ -87,23 +81,20 @@ public class CarCategoryController{
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String deletePost(@RequestParam(value = "listIdCategory", defaultValue = "") String[] listIdCategory,
-                             @ModelAttribute("authorization") Authorization authorization,
+                             @ModelAttribute("CurrentCarWashUser") User authorization,
                              Model model) {
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CategoryModel categoryModel = context.getBean("CategoryModel", CategoryModel.class);
 
         try {
 
             for (String id : listIdCategory) {
                 if (!id.equals("")) {
-                    categoryModel.deleteCategory(id);
+                    categoryService.deleteCategory(id);
                 }
             }
 
             model.addAttribute("globalMsg", "Категории успешно удалены");
 
-            List<Category> categoryList = categoryModel.selectAllCategory(authorization.getOwnerid());
+            List<Category> categoryList = categoryService.selectAllCategory(authorization.getOwnerId());
             model.addAttribute("categoryList", categoryList);
         }catch (Exception e) {
             model.addAttribute("globalError", e.getMessage());
@@ -111,7 +102,5 @@ public class CarCategoryController{
 
         return "owner/category/all";
     }
-
-
 
 }

@@ -1,22 +1,28 @@
 package biz.podoliako.carwash.controllers.owner;
 
-import biz.podoliako.carwash.dao.pojo.CarWash;
-import biz.podoliako.carwash.models.CarWashModel;
-import biz.podoliako.carwash.models.pojo.Authorization;
+import biz.podoliako.carwash.models.entity.CarWash;
+import biz.podoliako.carwash.services.CarWashService;
+import biz.podoliako.carwash.models.entity.User;
 import biz.podoliako.carwash.models.pojo.CarWashFormErrors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
 @Controller
 @RequestMapping("/owner/carwash")
-@SessionAttributes("authorization")
+@SessionAttributes("CurrentCarWashUser")
 public class CarWashController {
+
+    @Autowired
+    CarWashService carWashService;
+
 
     @RequestMapping(value="/add", method = RequestMethod.GET)
     public String addGet(){
@@ -30,26 +36,25 @@ public class CarWashController {
                           @RequestParam("startMin") String startMin,
                           @RequestParam("finishHours") String finishHours,
                           @RequestParam("finishMin") String finishMin,
-                          @ModelAttribute("authorization") Authorization authorization,
+                          HttpSession session,
                           Model model)  {
 
+        User user = (User) session.getAttribute("CurrentCarWashUser");
+
         try {
-            carWash.setOwnerId(authorization.getOwnerid());
+            carWash.setOwnerId(user.getOwnerId());
 
-            ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-            CarWashModel carWashModel = context.getBean("CarWashModel", CarWashModel.class);
+            carWashService.setShiftTime(carWash, startHours, startMin, finishHours, finishMin);
 
-            carWashModel.setShiftTime(carWash, startHours, startMin, finishHours, finishMin);
-
-            CarWashFormErrors carWashFormErrors = carWashModel.validateCarWashParam(carWash);
+            CarWashFormErrors carWashFormErrors = carWashService.validateCarWashParam(carWash);
             if (carWashFormErrors.isHasErrors()) {
                 model.addAttribute("carWashFormErrors", carWashFormErrors);
                 return "owner/carWash/add";
             }
 
-            carWashModel.addCarWash(carWash);
+            carWashService.addCarWash(carWash);
             model.addAttribute("globalMsg", "Мойка \"" + carWash.getName() + "\" создана");
-            List<CarWash> carWashList = getAllCarWashList(authorization.getOwnerid());
+            List<CarWash> carWashList = carWashService.getAllCarWashes(user.getOwnerId());
             model.addAttribute("carWashList", carWashList);
         }catch (Exception e) {
             model.addAttribute("globalError", e.getMessage());
@@ -61,21 +66,22 @@ public class CarWashController {
     }
 
     @RequestMapping(value="/all", method = RequestMethod.GET)
-    public String allGet(@ModelAttribute("authorization") Authorization authorization,
+    public String allGet(@ModelAttribute("CurrentCarWashUser") User authorization,
                          Model model) throws SQLException {
 
-        List<CarWash> carWashList = getAllCarWashList(authorization.getOwnerid());
+        List<CarWash> carWashList = carWashService.getAllCarWashes(authorization.getOwnerId());
+
         model.addAttribute("carWashList", carWashList);
 
         return "owner/carWash/all";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String deleteGet(@ModelAttribute("authorization") Authorization authorization,
+    public String deleteGet(@ModelAttribute("CurrentCarWashUser") User authorization,
                             Model model)throws SQLException {
 
             model.addAttribute("delete", new Boolean(true));
-            List<CarWash> carWashList = getAllCarWashList(authorization.getOwnerid());
+            List<CarWash> carWashList = carWashService.getAllCarWashes(authorization.getOwnerId());
             model.addAttribute("carWashList", carWashList);
 
             return "owner/carWash/all";
@@ -83,33 +89,23 @@ public class CarWashController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String deletePost(@RequestParam(value = "listIdCarWash", defaultValue = "") String[] listIdCarWash,
-                             @ModelAttribute("authorization") Authorization authorization,
+                             @ModelAttribute("CurrentCarWashUser") User authorization,
                              Model model) throws SQLException {
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CarWashModel carWashModel = context.getBean("CarWashModel", CarWashModel.class);
 
         for(String id : listIdCarWash) {
             if (!id.equals("")) {
-                carWashModel.deleteCarWash(id);
+                carWashService.deleteCarWash(id);
             }
         }
 
         model.addAttribute("globalMsg", "Мойки успешно удалены");
 
-        List<CarWash> carWashList = carWashModel.selectAllCarWashes(authorization.getOwnerid());
+        List<CarWash> carWashList = carWashService.getAllCarWashes(authorization.getOwnerId());
         model.addAttribute("carWashList", carWashList);
 
         return "owner/carWash/all";
     }
 
-    private List<CarWash> getAllCarWashList(Integer ownerId) throws SQLException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        CarWashModel carWashModel = context.getBean("CarWashModel", CarWashModel.class);
-
-        return carWashModel.selectAllCarWashes(ownerId);
-
-    }
 
 
 
