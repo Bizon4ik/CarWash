@@ -24,6 +24,8 @@ public class DaoFactoryImpl implements DaoFactory {
     private ServiceDao serviceDao;
     private UserDao userDao;
     private CarBrandDao carBrandDao;
+    private OrderDao orderDao;
+    private ClientCarDao clientCarDao;
 
     @Autowired
     public DaoFactoryImpl(
@@ -31,7 +33,9 @@ public class DaoFactoryImpl implements DaoFactory {
                           CategoryDao categoryDao,
                           ServiceDao serviceDao,
                           UserDao userDao,
-                          CarBrandDao carBrandDao) {
+                          CarBrandDao carBrandDao,
+                          OrderDao orderDao,
+                          ClientCarDao clientCarDao  ) {
 
 
         this.carWashDao = carWashDao;
@@ -39,6 +43,8 @@ public class DaoFactoryImpl implements DaoFactory {
         this.serviceDao = serviceDao;
         this.userDao = userDao;
         this.carBrandDao = carBrandDao;
+        this.orderDao = orderDao;
+        this.clientCarDao = clientCarDao;
     }
 
 
@@ -61,5 +67,15 @@ public class DaoFactoryImpl implements DaoFactory {
     @Override
     public CarBrandDao getCarBrandDao() {
         return carBrandDao;
+    }
+
+    @Override
+    public OrderDao getOrderDao() {
+        return  orderDao;
+    }
+
+    @Override
+    public ClientCarDao getClientCarDao() {
+        return clientCarDao;
     }
 }

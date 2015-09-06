@@ -5,6 +5,9 @@ import biz.podoliako.carwash.models.entity.Car;
 import biz.podoliako.carwash.models.entity.Category;
 import biz.podoliako.carwash.models.entity.User;
 import biz.podoliako.carwash.services.CategoryService;
+import biz.podoliako.carwash.services.OrderService;
+import biz.podoliako.carwash.view.OrderForm;
+import biz.podoliako.carwash.view.OrderFormData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,9 @@ public class OrderController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping(value = "/getCarNumber", method = RequestMethod.GET)
     public String getCarNumberAndCategoryGET(HttpSession session,
@@ -63,10 +69,74 @@ public class OrderController {
             model.addAttribute("globalError", e.getMessage());
             return "admin/main";
         }
+        session.setAttribute("car", car);
 
-        return "admin/order/carNumberAndCategory";
+        return "redirect:/admin/order/add";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addOrderGet(HttpSession session,
+                              Model model){
+        Car car = (Car) session.getAttribute("car");
+        if (car == null) {
+            return "redirect:/admin/order/getCarNumber";
+        }
+
+        User user = (User) session.getAttribute("CurrentCarWashUser");
+        Integer carWashId = (Integer) session.getAttribute("ChoosenCarWashId");
+
+        OrderForm orderForm = orderService.createOrderFormWithStaticFilds(car);
+
+        OrderFormData orderFormData = null;
+        try {
+            orderFormData = orderService.getOrderFormData(carWashId, car.getCategoryId(), user);
+        } catch (SQLException e) {
+            model.addAttribute("globalError", e.getMessage());
+            return "admin/main";
+        }
+
+        model.addAttribute("orderForm", orderForm);
+        model.addAttribute("orderFormData", orderFormData);
+
+
+
+        return "admin/order/orderForm";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addOrderPost(@Valid @ModelAttribute("orderForm") OrderForm orderForm,
+                               BindingResult bindingResult,
+                               HttpSession session,
+                               Model model) {
+        try {
+                if (bindingResult.hasErrors()){
+                    Car car = (Car) session.getAttribute("car");
+                    if (car == null) {
+                        return "redirect:/admin/order/getCarNumber";
+                    }
+
+                    User user = (User) session.getAttribute("CurrentCarWashUser");
+                    Integer carWashId = (Integer) session.getAttribute("ChoosenCarWashId");
+
+                    OrderFormData orderFormData = orderService.getOrderFormData(carWashId, car.getCategoryId(), user);
+
+                    model.addAttribute("orderFormData", orderFormData);
+
+                    return "admin/order/orderForm";
+                }
+            System.out.println(orderForm);
+
+            orderService.addOrder(orderForm);
+
+        } catch (SQLException e) {
+            model.addAttribute("globalError", e.getMessage());
+            return "admin/main";
+        }
+
+
+
+        return "admin/order/orderForm";
+    }
 
 
 }

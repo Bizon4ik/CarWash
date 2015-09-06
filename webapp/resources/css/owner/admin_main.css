@@ -125,6 +125,11 @@ td .firstLetterUppercase {
 	text-transform: uppercase;
 }
 
+.staticTextInForm {
+	text-transform: uppercase;
+	font-size: 1.5em;
+	color: lightslategray;
+}
 
 @media (max-width: 1170px ) {
 	.dropdown a, .active a{
@@ -157,120 +162,9 @@ td .firstLetterUppercase {
 	caption {
 		font-size: 2em;
 	}
+
+	.staticTextInForm {
+		font-size: 2em;
+	}
 }
 
-/*
-.form-control {
-	padding: 6px 1px;
-	text-align: center;
-}
-
-.btn {
-	padding: 6px 1px;
-}
-
-
-
-
-.message {
-	margin: 0 0 0.5em 0;
-	padding: 0.5em;
-	font-size: 1.5em;
-	font-weight: bold;
-	float: left;
-	border-radius: 5px;
-}
-
-.green {
-	color :#98E090;
-}
-.error{
-	 color: #ED7A7A;
- }
-
-#deleteButtomCarWash {
-	float:right;
-	min-width: 10%;
-}
-
-.deleteButtom {
-	float:right;
-	min-width: 10%;
-}
-
-
-
-.categoryName {
-	color: cornflowerblue;
-	font-weight: 500;
-	font-size: 1.1em;
-}
-
-.boksNumber {
-	font-size: 1.5em;
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-.boksContext {
-	width: 100%;
-	border: 1px solid black;
-	box-shadow:0 0 10px rgba(0,0,0,0.5); 
-	padding-bottom: 1.0em;
-}
-
-.boksContextRows{
-	margin-top: 1.0em;
-
-}
-
-#carClassDescription {
-	color: grey;
-	text-align: center;
-	bottom: auto;
-	font-size: 0.9em;
-	font-style: italic;
-}
-
-.carClassDescription {
-	color: grey;
-	text-align: center;
-	bottom: auto;
-	font-size: 0.9em;
-	font-style: italic;
-}
-
-.topLine {
-	margin-top: 0.5em;
-	padding-top: 0.5em;
-	border-top: 1px solid black;
-
-}
-
-.boldFont{
-	font-weight: bold;
-	margin-bottom: 1.0em;
-}
-
-.services {
-	border: 1px solid #B0B0B0 ;
-	background-color: #B0B0B0 ;
-	border-radius: 5px;
-	margin-top: 0.5em;
-
-}
-
-.btn-group-justified {
-	margin-top: 1.0em;
-
-}
-
-#serviceButton {
-	padding: 0;
-	margin-top: 0.5em;
-}
-
-.fat {
-	font-weight: 600;
-}
-*/

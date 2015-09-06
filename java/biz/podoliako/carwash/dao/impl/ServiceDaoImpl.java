@@ -166,6 +166,8 @@ public class ServiceDaoImpl implements ServiceDao{
                                     "s.date_of_creation as sDateOfCreation, " +
                                     "s.date_of_delete as sdate_of_delete, " +
                                     "s.owner_id as sowner_id, " +
+                                    "s.countable as countable,   " +
+                                    "s.addition_price as addition_price," +
                 "" +
                                "cws.price as cwsprice, " +
                                "cws.commision_day as cwscommision_day, " +
@@ -218,6 +220,8 @@ public class ServiceDaoImpl implements ServiceDao{
                 serviceName.setDateOfCreation(rs.getDate("sDateOfCreation"));
                 serviceName.setDateOfDelete(rs.getDate("sdate_of_delete"));
                 serviceName.setOwnerId(rs.getInt("sowner_id"));
+                serviceName.setCountable(rs.getBoolean("countable"));
+                serviceName.setAdditionPrice(rs.getBoolean("addition_price"));
             carWashService.setServiceName(serviceName);
             carWashService.setPrice(rs.getBigDecimal("cwsprice"));
             carWashService.setCommisionDay(rs.getInt("cwscommision_day"));
@@ -225,6 +229,7 @@ public class ServiceDaoImpl implements ServiceDao{
             carWashService.setDateOfCreation(rs.getTimestamp("cwsdate_of_creation"));
             carWashService.setDateOfDelate(rs.getTimestamp("cwsdate_of_delete"));
             carWashService.setOwnerId(rs.getInt("cwsowner_id"));
+
 
             carWashServiceList.add(carWashService);
         }

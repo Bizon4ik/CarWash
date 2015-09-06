@@ -7,6 +7,8 @@ public interface DaoFactory {
     public ServiceDao getServiceDao();
     public UserDao getUserDao();
     public CarBrandDao getCarBrandDao();
+    public OrderDao getOrderDao();
+    public ClientCarDao getClientCarDao();
 
 
 

@@ -19,7 +19,7 @@ public interface CategoryDao {
 
     public boolean isCategoryNameExist(String name) throws SQLException;
 
-    public CarWash selectCategory(Integer categoryId);
+    public Category selectCategory(Integer categoryId);
 
     public List<Category> selectAllCategories(Integer ownerId) throws SQLException;
 }
