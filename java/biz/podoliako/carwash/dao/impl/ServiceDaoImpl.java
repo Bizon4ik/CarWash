@@ -19,8 +19,7 @@ import java.util.*;
 @Component("ServiceDao")
 @Scope(BeanDefinition.SCOPE_SINGLETON )
 public class ServiceDaoImpl implements ServiceDao{
-    public final static String SERVICE_NAME_TABLE = "service_names";
-    public final static String CAR_WASH_SERVICE_NAME_TABLE = "car_wash_services";
+
 
     private Connection connection = null;
 

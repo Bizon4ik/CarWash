@@ -33,11 +33,11 @@ public interface UserDao  {
 
     void addWasherManInBox(WasherManInBox washerManInBox);
 
-    Set<WasherManInBoxWithName> selectWasherManInBoxWithName(Integer carWashId, int box) throws SQLException, NamingException;
+    Set<WasherManInBoxWithName> selectWasherManInBoxWithName(Integer carWashId, int box);
 
     Set<WasherManInBoxWithName> selectAvailableAndCurrentWasherManInBox(Integer washId, Integer boxNum);
 
-    Set<WasherManInBox> selectAllWasherManInBox(Integer washId, Integer boxNum) throws SQLException, NamingException;
+    Set<WasherManInBox> selectAllWasherManInBox(Integer washId, Integer boxNum);
 
     Set<Integer> selectUserIdsWasherManInBox(Integer washId, Integer boxNum);
 

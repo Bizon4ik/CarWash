@@ -16,6 +16,10 @@ body{
 	width: 100%;
 	margin: 0;
 }
+
+sub{
+	bottom: 0em;
+}
 .form-control {
 	font-size: 1.5em;
 	padding:0;
@@ -55,7 +59,7 @@ body{
 	display: inline-block;
 	vertical-align: middle;
 	padding:0 15px;
-	line-height: 1.5em;
+	line-height: 2em;
 	color: #00FFFF;
 	font-size: 1.5em;
 }
@@ -111,7 +115,12 @@ sup {
 	padding-bottom: 0.5em;
 }
 
-caption {
+.bottomLineBlack {
+	border-bottom: 1px solid #000000;
+	padding-top: 0.3em;
+}
+
+caption, .titleOftables {
 	font-size: 1.5em;
 	color: #000000;
 	font-weight: 800;
@@ -159,7 +168,7 @@ td .firstLetterUppercase {
 		font-size: 2em;
 	}
 
-	caption {
+	caption, .titleOftables {
 		font-size: 2em;
 	}
 

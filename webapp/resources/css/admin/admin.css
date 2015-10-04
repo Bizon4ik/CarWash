@@ -1,12 +1,12 @@
 #addOrder {
     background-color: #21ff0d;
-    font-size: 1.5em;
 }
 
 .orderForm {
     border:1px solid #000000;
     box-shadow:0 0 10px rgba(0,0,0,0.5);
     padding-top: 0.5em;
+    margin: 0.5em 0;
 }
 
 .orderList {
@@ -16,11 +16,30 @@
     padding:0.5em 0;
 }
 
-@media (max-width: 1170px ) {
+.xsWithoutPadding {
+    padding: 0;
+}
 
-    #addOrder {
-        font-size: 2em;
-    }
+.nameOfRowInOrder{
+    text-align: right;
+    padding-right: 3%;
+    font-size: 1.2em;
+}
+
+.valueOfRowInOrder {
+    font-size: 1.3em;
+}
+
+.finalPrice{
+    font-weight: 700;
+}
+
+.orderForm a {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+@media (max-width: 1170px ) {
 
 
 }

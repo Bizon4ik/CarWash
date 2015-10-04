@@ -29,13 +29,25 @@
         <div class="form-group">
           <label for="carBrand" class="col-xs-4 col-md-offset-1 col-md-2 col-lg-offset-1 col-lg-2">Марка:<sup>*</sup>:</label>
           <div class="col-xs-8 col-md-5 col-lg-4">
-            <form:select size="1"  multiple="false" path="carBrandId" cssClass="form-control" id="carBrand"  itemLabel="${orderForm.carBrandId}">
-              <form:option value=""> </form:option>
-              <c:forEach items="${orderFormData.carBrandList}" var="carBrand" varStatus="loop">
-                <form:option value="${carBrand.id}"> ${carBrand.name} </form:option>
-              </c:forEach>
-            </form:select>
-            <form:errors path="carBrandId" cssClass="errorMessage"></form:errors>
+            <c:choose>
+              <c:when test="${orderFormData.carBrandList != null}">
+                <form:select size="1"  multiple="false" path="carBrandId" cssClass="form-control" id="carBrand"  itemLabel="${orderForm.carBrandId}">
+                  <form:option value="-1">&ensp;</form:option>
+                  <c:forEach items="${orderFormData.carBrandList}" var="carBrand" varStatus="loop">
+                    <form:option value="${carBrand.id}"> ${carBrand.name} </form:option>
+                  </c:forEach>
+                </form:select>
+                <form:errors path="carBrandId" cssClass="errorMessage"></form:errors>
+              </c:when>
+              <c:otherwise>
+                <div class="staticTextInForm">
+                  <c:out value="${orderFormData.carBrandName}" />
+                </div>
+                <form:input path="carBrandId" value="${orderForm.carBrandId}" type="hidden" />
+              </c:otherwise>
+            </c:choose>
+
+
           </div>
         </div>
 

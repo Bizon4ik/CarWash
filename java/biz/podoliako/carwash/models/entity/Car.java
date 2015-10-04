@@ -44,11 +44,11 @@ public class Car {
         this.id = id;
     }
 
-    public Integer getBrandId() {
+    public  Integer getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(Integer brandId) {
+    public  void setBrandId(Integer brandId) {
         this.brandId = brandId;
     }
 

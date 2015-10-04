@@ -27,7 +27,7 @@
 
       <li class="active"> <a href="/admin/main">Главная</a> </li>
 
-      <li id="addOrder">
+      <li class="dropdown" id="addOrder">
         <a href="/admin/order/getCarNumber" role="button" aria-expanded="false" >Добавить</a>
       </li>
 

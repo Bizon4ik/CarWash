@@ -21,7 +21,7 @@ public interface CarWashDao {
 
     public boolean isCarWashNameExist(String name) throws SQLException;
 
-    public CarWash selectCarWash(Integer id) throws SQLException, NamingException;
+    public CarWash selectCarWash(Integer id);
 
     public List<CarWash> selectAllCarWash(Integer ownerId) throws SQLException;
 

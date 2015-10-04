@@ -2,6 +2,7 @@ package biz.podoliako.carwash.services.entity;
 
 
 public class ServiceInOrder {
+    private Integer orderId;
     private Integer CarWashServiceId;
     private Integer count;
     private Integer additionPrice;
@@ -33,10 +34,19 @@ public class ServiceInOrder {
         this.additionPrice = additionPrice;
     }
 
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     @Override
     public String toString() {
         return "ServiceInOrder{" +
-                "CarWashServiceId=" + CarWashServiceId +
+                "orderId=" + orderId +
+                ", CarWashServiceId=" + CarWashServiceId +
                 ", count=" + count +
                 ", additionPrice=" + additionPrice +
                 '}';

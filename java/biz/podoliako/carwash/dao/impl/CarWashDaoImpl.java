@@ -2,6 +2,8 @@ package biz.podoliako.carwash.dao.impl;
 
 import biz.podoliako.carwash.dao.CarWashDao;
 import biz.podoliako.carwash.models.entity.CarWash;
+import biz.podoliako.carwash.services.exeption.NamingRuntimeException;
+import biz.podoliako.carwash.services.exeption.SQLRuntimeException;
 import biz.podoliako.carwash.services.impl.ConnectDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -77,7 +79,7 @@ public class CarWashDaoImpl implements CarWashDao {
     }
 
     @Override
-    public CarWash selectCarWash(Integer id) throws SQLException, NamingException {
+    public CarWash selectCarWash(Integer id){
         Connection connection = null;
         PreparedStatement ps = null;
         CarWash carWash = new CarWash();
@@ -101,15 +103,23 @@ public class CarWashDaoImpl implements CarWashDao {
                 carWash.setStartDayShift(rs.getTime("start_shift"));
                 carWash.setFinishDayShift(rs.getTime("finish_shift"));
             }
-
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе isCarWashNameExist (CarWashDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе isCarWashNameExist (CarWashDaoImpl) " + e);
         } finally {
-            if (ps != null) {
-                ps.close();
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            }catch (SQLException e) {
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе isCarWashNameExist (CarWashDaoImpl) " + e);
             }
 
-            if (connection != null) {
-                connection.close();
-            }
         }
 
         return carWash;

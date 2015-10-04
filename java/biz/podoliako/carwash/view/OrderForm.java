@@ -2,9 +2,10 @@ package biz.podoliako.carwash.view;
 
 
 import biz.podoliako.carwash.models.PaymentMethod;
-import biz.podoliako.carwash.models.entity.Car;
 import biz.podoliako.carwash.services.entity.ServiceInOrder;
 import biz.podoliako.carwash.services.validation.NotEmptyTrim;
+import biz.podoliako.carwash.services.validation.NotNegative;
+
 
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,8 @@ public class OrderForm {
 
     private Integer categoryId;
 
-    @NotNull(message = "Не выбран бренд")
+
+    @NotNegative(message = "Бренд не выбран")
     private Integer carBrandId;
 
     @NotNull(message = "Не выбран бокс")
@@ -26,6 +28,16 @@ public class OrderForm {
     private PaymentMethod paymentMethod;
 
     private List<ServiceInOrder> serviceIdList;
+
+    private Integer userId;
+
+    private Integer ownerId;
+
+    private Integer carWashId;
+
+    private Integer orderId;
+
+
 
     public OrderForm() {
     }
@@ -78,6 +90,38 @@ public class OrderForm {
         this.serviceIdList = serviceIdList;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getCarWashId() {
+        return carWashId;
+    }
+
+    public void setCarWashId(Integer carWashId) {
+        this.carWashId = carWashId;
+    }
+
+    public Integer getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     @Override
     public String toString() {
         return "OrderForm{" +
@@ -87,6 +131,10 @@ public class OrderForm {
                 ", boxNumber=" + boxNumber +
                 ", paymentMethod=" + paymentMethod +
                 ", serviceIdList=" + serviceIdList +
+                ", userId=" + userId +
+                ", ownerId=" + ownerId +
+                ", carWashId=" + carWashId +
+                ", orderId=" + orderId +
                 '}';
     }
 }

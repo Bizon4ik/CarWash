@@ -1,47 +1,19 @@
 package biz.podoliako.carwash;
 
-import biz.podoliako.carwash.dao.DaoFactory;
-import biz.podoliako.carwash.dao.UserDao;
-import biz.podoliako.carwash.dao.impl.*;
-import biz.podoliako.carwash.models.PaymentMethod;
-import biz.podoliako.carwash.models.entity.CarBrand;
-import biz.podoliako.carwash.models.entity.ServiceName;
-import biz.podoliako.carwash.models.entity.User;
-import biz.podoliako.carwash.services.ConnectionDB;
-import biz.podoliako.carwash.services.impl.ConnectDBTest;
-
-
-import javax.naming.NamingException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 public class test {
 
-    public static void main(String[] args) throws SQLException, NamingException {
-        PaymentMethod paymentMethod = PaymentMethod.Cash;
+    private Integer data = 1;
 
-        if (paymentMethod.getLable().equals("Cash")){
-            System.out.println("yes");
-        }else {
-            System.out.println("No");
+    public class abc {
+
+        public Integer data;
+
+        public abc(Integer data) {
+            this.data = data;
+            test.this.data = data;
+
         }
-
-        System.out.println(paymentMethod.getLable());
-
-
-
-
-
-
-
     }
 
-
 }
-

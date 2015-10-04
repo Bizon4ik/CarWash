@@ -24,8 +24,6 @@ import java.util.Set;
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 public class CategoryDaoImpl implements CategoryDao {
 
-    public final static String CATEGORY_TABLE_NAME = "category";
-
     private Connection conn = null;
     private ConnectionDB connectionDB;
 

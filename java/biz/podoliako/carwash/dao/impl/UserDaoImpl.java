@@ -328,7 +328,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Set<WasherManInBoxWithName> selectWasherManInBoxWithName(Integer carWashId, int box) throws SQLException, NamingException {
+    public Set<WasherManInBoxWithName> selectWasherManInBoxWithName(Integer carWashId, int box)  {
         Connection connection = null;
         PreparedStatement ps = null;
         Set<WasherManInBoxWithName> washerManList = null;
@@ -376,7 +376,10 @@ public class UserDaoImpl implements UserDao {
 
                 washerManList.add(washerManWithName);
             }
-
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе selectWasherManInBoxWithName (UserDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе selectWasherManInBoxWithName (UserDaoImpl) " + e);
         }finally {
             try {
                 if (ps !=null){
@@ -387,7 +390,7 @@ public class UserDaoImpl implements UserDao {
                 }
 
             } catch (SQLException e) {
-                System.out.println("Cannot close connection or PreparedStatement : " + e);
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе selectWasherManInBoxWithName (UserDaoImpl) " + e);
             }
 
         }
@@ -454,7 +457,7 @@ public class UserDaoImpl implements UserDao {
                 washerManInBoxWithNameSet.add(washerManWithName);
             }
         } catch (SQLException e) {
-            throw new SQLRuntimeException("SQL exception в методе selectAvailableAndCurrentWasherManInBoxx (UserDaoImpl) " + e);
+            throw new SQLRuntimeException("SQL exception в методе selectAvailableAndCurrentWasherManInBox (UserDaoImpl) " + e);
         } catch (NamingException e) {
             throw new NamingRuntimeException("Naming exception в методе selectAvailableAndCurrentWasherManInBox (UserDaoImpl) " + e);
         } finally {
@@ -476,7 +479,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Set<WasherManInBox> selectAllWasherManInBox(Integer carWashId, Integer boxNum) throws SQLException, NamingException {
+    public Set<WasherManInBox> selectAllWasherManInBox(Integer carWashId, Integer boxNum) {
         Connection connection = null;
         PreparedStatement ps = null;
         Set<WasherManInBox> washerManInBoxSet = new HashSet<>();
@@ -517,6 +520,10 @@ public class UserDaoImpl implements UserDao {
 
                 washerManInBoxSet.add(washerMan);
             }
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе selectAllWasherManInBox (UserDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе selectAllWasherManInBox (UserDaoImpl) " + e);
         }finally {
             try {
                 if (ps !=null){

@@ -13,6 +13,7 @@ public class OrderFormData {
     private List<CarBrand> carBrandList;
     private List<Integer> availableBoxList;
     private List<CarWashService> carWashServices;
+    private String carBrandName = "N/A";
 
 
     public Category getCategory() {
@@ -45,5 +46,13 @@ public class OrderFormData {
 
     public void setCarWashServices(List<CarWashService> carWashServices) {
         this.carWashServices = carWashServices;
+    }
+
+    public String getCarBrandName() {
+        return carBrandName;
+    }
+
+    public void setCarBrandName(String carBrandName) {
+        this.carBrandName = carBrandName;
     }
 }

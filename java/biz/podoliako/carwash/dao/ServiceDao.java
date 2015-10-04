@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ServiceDao {
     public final static Integer NAME_MAX_LENGTH = 300;
+    public final static String SERVICE_NAME_TABLE = "service_names";
+    public final static String CAR_WASH_SERVICE_NAME_TABLE = "car_wash_services";
 
     void addServiceName(ServiceName serviceName) throws SQLException;
 

@@ -9,6 +9,7 @@ import java.util.List;
 public interface CategoryDao {
     public final static Integer NAME_MAX_LENGTH = 100;
     public final static Integer DESCRIPTION_MAX_LENGTH = 200;
+    public final static String CATEGORY_TABLE_NAME = "category";
 
 
     public void addCategory(Category category) throws SQLException;
