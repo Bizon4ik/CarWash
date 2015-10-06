@@ -30,4 +30,6 @@ public interface OrderService {
     void closeOrder(String orderId, Integer washId, Integer userId);
 
     void deleteOrder(String orderId, Integer washId, Integer userId);
+
+    Boolean isOrderOpen(String idOrder);
 }

@@ -118,6 +118,12 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public Boolean isOrderOpen(String idOrder) {
+        Integer id = Integer.valueOf(idOrder);
+        return daoFactory.getOrderDao().isOrderOpen(id);
+    }
+
     private void deleteServicesInOrder(Integer orderId) {
         daoFactory.getOrderDao().deleteServicesInOrder(orderId);
     }

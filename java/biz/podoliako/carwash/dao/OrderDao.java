@@ -37,4 +37,6 @@ public interface OrderDao {
     void closeOrder(Integer id, Integer washId, Integer userId, Date dateOfClose);
 
     void deleteOrder(Integer id, Integer washId, Integer userId,  Date date);
+
+    Boolean isOrderOpen(Integer id);
 }

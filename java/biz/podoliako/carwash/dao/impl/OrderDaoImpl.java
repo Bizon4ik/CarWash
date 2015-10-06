@@ -607,4 +607,51 @@ public class OrderDaoImpl implements OrderDao{
             }
         }
     }
+
+    @Override
+    public Boolean isOrderOpen(Integer id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Boolean result = new Boolean(false);
+
+        try {
+            connection = connectionDB.getConnection();
+
+            String query = "SELECT * " +
+                    "FROM " + ORDER_TABLE +
+                    " WHERE id = ? " +
+                    " AND date_of_delete IS NULL  " +
+                    " AND date_of_close IS NULL ";
+
+            ps = connection.prepareStatement(query);
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                result = false;
+
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе isOrderOpen (OrderDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе isOrderOpen (OrderDaoImpl) " + e);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            }catch (SQLException e) {
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе isOrderOpen (OrderDaoImpl) " + e);
+            }
+        }
+    }
 }

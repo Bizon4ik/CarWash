@@ -150,12 +150,13 @@ public class OrderController {
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes,
                                 Model model) {
-        /*
-        Добавить проверку на что заказ закрыт!!!
-
-        */
 
         try {
+            if (!orderService.isOrderOpen(idOrder)){
+                redirectAttributes.addFlashAttribute("globalError", "Заказ " + idOrder + " нельзя редактировать");
+                return "redirect:/admin/main";
+            }
+
 
             OrderForm orderForm = orderService.createOrderFormForChanges(idOrder);
 

@@ -140,6 +140,11 @@ td .firstLetterUppercase {
 	color: lightslategray;
 }
 
+.timeInForm {
+	display: inline-block;
+	width: inherit;
+}
+
 @media (max-width: 1170px ) {
 	.dropdown a, .active a{
 		font-size: 2em;

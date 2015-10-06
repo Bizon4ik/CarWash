@@ -48,7 +48,7 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Статистика<span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/adminMain/statistic?action=generalforcarwash">Общая</a></li>
+          <li><a href="/admin/statistic/period">Общая</a></li>
           <li><a href="/adminMain/statistic?action=sericeforcarwash">По услугам</a></li>
         </ul>
       </li>
