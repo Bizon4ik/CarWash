@@ -11,6 +11,7 @@ public interface CarWashDao {
     public final static Integer NAME_MAX_LENGTH = 50;
     public final static Integer ADDRESS_MAX_LENGTH = 200;
     public final static Integer PHONE_NUMBER_MAX_LENGTH = 20;
+    public final static String CAR_WASH_TABLE = "car_wash";
 
 
     public void addCarWash(CarWash carWash) throws SQLException;

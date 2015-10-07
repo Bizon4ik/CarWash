@@ -1,5 +1,6 @@
 package biz.podoliako.carwash.dao.impl;
 
+import biz.podoliako.carwash.dao.CarWashDao;
 import biz.podoliako.carwash.dao.OrderDao;
 import biz.podoliako.carwash.dao.ServiceDao;
 import biz.podoliako.carwash.models.PaymentMethod;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.naming.NamingException;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -236,7 +238,7 @@ public class OrderDaoImpl implements OrderDao{
     }
 
     @Override
-    public void insertWasherManInOrder(WasherManInBox washerManInBox, Integer orderId) {
+    public void insertWasherManInOrder(Integer washerManId, BigDecimal salary, Integer orderId) {
         Connection connection = null;
         PreparedStatement ps = null;
 
@@ -244,14 +246,15 @@ public class OrderDaoImpl implements OrderDao{
             connection = connectionDB.getConnection();
 
             String query = "INSERT INTO " + WASHER_MAN_IN_ORDER_TABLE +
-                    " (order_id, user_id) " +
+                    " (order_id, user_id, salary) " +
                     "VALUES " +
-                    " (?,           ?)";
+                    " (?,           ?,       ?)";
 
             ps = connection.prepareStatement(query);
 
             ps.setInt(1, orderId);
-            ps.setInt(2, washerManInBox.getUserId());
+            ps.setInt(2, washerManId);
+            ps.setBigDecimal(3, salary);
 
             ps.execute();
 
@@ -651,6 +654,108 @@ public class OrderDaoImpl implements OrderDao{
                 }
             }catch (SQLException e) {
                 throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе isOrderOpen (OrderDaoImpl) " + e);
+            }
+        }
+    }
+
+    @Override
+    public BigDecimal getSalaryForOrder(Integer id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        BigDecimal result = new BigDecimal(0);
+
+        try {
+            connection = connectionDB.getConnection();
+
+            String query = "SELECT "+
+                                  "sum(case " +
+                                  "         when (time(o.date_of_creation) between time(cw.start_shift) AND time (cw.finish_shift)) " +
+                                  "         then (cws.price*ordered.quantity+ordered.addition_price)*cws.commision_day/100 " +
+                                  "         else (cws.price*ordered.quantity+ordered.addition_price)*cws.commision_night/100 " +
+                                  "    end) as result " +
+                           "FROM " + ORDERED_SERVICES_TABLE + " AS  ordered " +
+                           "JOIN " + ORDER_TABLE + " AS o ON ordered.order_id = o.id " +
+                           "JOIN " + ServiceDao.CAR_WASH_SERVICE_NAME_TABLE + " AS cws ON ordered.car_wash_services_id = cws.id " +
+                           "JOIN " + CarWashDao.CAR_WASH_TABLE + " AS cw ON cws.car_wash_id = cw.id " +
+                           "WHERE ordered.order_id = ?";
+
+            ps = connection.prepareStatement(query);
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                result = rs.getBigDecimal("result");
+
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе getSalaryForOrder (OrderDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе getSalaryForOrder (OrderDaoImpl) " + e);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            }catch (SQLException e) {
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе getSalaryForOrder (OrderDaoImpl) " + e);
+            }
+        }
+    }
+
+    @Override
+    public Boolean isItDayOrder(Integer id) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Boolean result = new Boolean(false);
+
+        try {
+            connection = connectionDB.getConnection();
+
+            String query = "SELECT "+
+                             "o.id as id " +
+
+                    "FROM " + ORDER_TABLE + " AS o " +
+                    "JOIN " + CarWashDao.CAR_WASH_TABLE + " AS cw ON o.car_wash_id = cw.id " +
+                    "WHERE o.id = ? " +
+                    "AND time(o.date_of_creation) between time(cw.start_shift) AND time (cw.finish_shift)";
+
+            ps = connection.prepareStatement(query);
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                result = true;
+
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе isItDayOrder (OrderDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе isItDayOrder (OrderDaoImpl) " + e);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            }catch (SQLException e) {
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе isItDayOrder (OrderDaoImpl) " + e);
             }
         }
     }

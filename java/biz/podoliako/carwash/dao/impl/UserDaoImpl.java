@@ -7,6 +7,7 @@ import biz.podoliako.carwash.models.entity.UserCompensation;
 import biz.podoliako.carwash.models.entity.WasherManInBox;
 import biz.podoliako.carwash.services.ConnectionDB;
 import biz.podoliako.carwash.services.entity.AddUserForm;
+import biz.podoliako.carwash.services.entity.WasherManInBoxWithRate;
 import biz.podoliako.carwash.services.exeption.NamingRuntimeException;
 import biz.podoliako.carwash.services.exeption.SQLRuntimeException;
 import biz.podoliako.carwash.services.impl.ConnectDB;
@@ -623,6 +624,74 @@ public class UserDaoImpl implements UserDao {
             }
 
         }
+    }
+
+    @Override
+    public Set<WasherManInBoxWithRate> selectAllWasherManInBoxWithRate(Integer washId, Integer boxNumber) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        Set<WasherManInBoxWithRate> washerManInBoxWithRateSet = new HashSet<>();
+
+        try {
+            connection = connectionDB.getConnection();
+
+            String query = "SELECT " +
+                    "w.id as id, " +
+                    "w.user_id as user_id, " +
+                    "w.car_wash_id as car_wash_id, " +
+                    "w.box_number as box_number, " +
+                    "w.start as start, " +
+                    "w.finish as finish, " +
+                    "w.set_by as set_by, " +
+                    "u.day_commission as day_commission, " +
+                    "u.night_commission as night_commission " +
+
+                    "FROM "  + WASHER_MAN_IN_BOX_TABLE + " as w " +
+                    "JOIN "  + USER_TABLE + " as u ON w.user_id = u.id "+
+
+                    "WHERE w.car_wash_id = ? " +
+                    "AND w.finish IS NULL " +
+                    "AND w.box_number = ? ";
+
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, washId);
+            ps.setInt(2, boxNumber);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                WasherManInBoxWithRate washerMan  = new WasherManInBoxWithRate();
+                washerMan.setId(rs.getInt("id"));
+                washerMan.setUserId(rs.getInt("user_id"));
+                washerMan.setCarWashId(rs.getInt("car_wash_id"));
+                washerMan.setBoxNumber(rs.getInt("box_number"));
+                washerMan.setStartInBox(rs.getTimestamp("start"));
+                washerMan.setFinishInBox(rs.getTimestamp("finish"));
+                washerMan.setSetInBoxBy(rs.getInt("set_by"));
+                washerMan.setDayCommission(rs.getInt("day_commission"));
+                washerMan.setNightCommission(rs.getInt("night_commission"));
+
+                washerManInBoxWithRateSet.add(washerMan);
+            }
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе selectAllWasherManInBoxWithRate (UserDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе selectAllWasherManInBoxWithRate (UserDaoImpl) " + e);
+        }finally {
+            try {
+                if (ps !=null){
+                    ps.close();
+                }
+                if (connection !=null ){
+                    connection.close();
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Cannot close connection or PreparedStatement in selectAllWasherManInBoxWithRate (UserDaoImpl) : " + e);
+            }
+        }
+
+        return washerManInBoxWithRateSet;
     }
 
     @Override

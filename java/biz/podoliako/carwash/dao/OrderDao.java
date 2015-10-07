@@ -6,6 +6,7 @@ import biz.podoliako.carwash.models.entity.WasherManInBox;
 import biz.podoliako.carwash.services.entity.ServiceInOrder;
 import biz.podoliako.carwash.view.OrderedService;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface OrderDao {
 
     List<ServiceInOrder> selectAllServiceInOrder(Integer orderId);
 
-    void insertWasherManInOrder(WasherManInBox washerManInBox, Integer orderId);
+    void insertWasherManInOrder(Integer washerManId, BigDecimal salary, Integer orderId);
 
     Order selectOrder(Integer washId, Integer box);
 
@@ -39,4 +40,8 @@ public interface OrderDao {
     void deleteOrder(Integer id, Integer washId, Integer userId,  Date date);
 
     Boolean isOrderOpen(Integer id);
+
+    BigDecimal getSalaryForOrder(Integer id);
+
+    Boolean isItDayOrder(Integer id);
 }

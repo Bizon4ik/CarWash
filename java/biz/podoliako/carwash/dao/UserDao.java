@@ -3,6 +3,7 @@ package biz.podoliako.carwash.dao;
 import biz.podoliako.carwash.models.entity.User;
 import biz.podoliako.carwash.models.entity.WasherManInBox;
 import biz.podoliako.carwash.services.entity.AddUserForm;
+import biz.podoliako.carwash.services.entity.WasherManInBoxWithRate;
 import biz.podoliako.carwash.view.WasherManInBoxWithName;
 
 import javax.naming.NamingException;
@@ -42,4 +43,6 @@ public interface UserDao  {
     Set<Integer> selectUserIdsWasherManInBox(Integer washId, Integer boxNum);
 
     void insertFinishTimeForWasherManInBox(Integer userId, Date date);
+
+    Set<WasherManInBoxWithRate> selectAllWasherManInBoxWithRate(Integer washId, Integer boxNumber);
 }

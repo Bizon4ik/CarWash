@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 public class CarWashDaoImpl implements CarWashDao {
-    public final static String CAR_WASH_TABLE = "car_wash";
+
 
     private Connection conn = null;
 

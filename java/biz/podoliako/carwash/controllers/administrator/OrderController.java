@@ -113,6 +113,7 @@ public class OrderController {
     public String addOrderPost(@Valid @ModelAttribute("orderForm") OrderForm orderForm,
                                BindingResult bindingResult,
                                HttpSession session,
+                               RedirectAttributes redirectAttributes,
                                Model model) {
 
         OrderForm orderFormInSession = (OrderForm) session.getAttribute("orderForm");
@@ -140,6 +141,9 @@ public class OrderController {
         } catch (SQLException e) {
             model.addAttribute("globalError", e.getMessage());
             return "admin/main";
+        } catch (Throwable e) {
+            redirectAttributes.addFlashAttribute("globalError", e.getMessage());
+            return "redirect:admin/main";
         }
 
         return "redirect:/admin/main";

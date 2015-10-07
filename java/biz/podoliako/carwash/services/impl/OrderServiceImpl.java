@@ -7,16 +7,14 @@ import biz.podoliako.carwash.models.PaymentMethod;
 import biz.podoliako.carwash.models.entity.*;
 import biz.podoliako.carwash.services.OrderService;
 import biz.podoliako.carwash.services.entity.ServiceInOrder;
+import biz.podoliako.carwash.services.entity.WasherManInBoxWithRate;
 import biz.podoliako.carwash.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("OrderService")
 public class OrderServiceImpl implements OrderService {
@@ -280,10 +278,68 @@ public class OrderServiceImpl implements OrderService {
 
 
     private void insertGangInOrder(OrderForm orderForm, Integer carWashId, Integer orderId) {
-        Set<WasherManInBox> washerManInBoxSet = daoFactory.getUserDao().selectAllWasherManInBox(carWashId, orderForm.getBoxNumber());
-        for (WasherManInBox w : washerManInBoxSet) {
-            daoFactory.getOrderDao().insertWasherManInOrder(w, orderId);
+        BigDecimal budgetForSale = daoFactory.getOrderDao().getSalaryForOrder(orderId);
+
+        Set<WasherManInBoxWithRate> washerManInBoxSet = daoFactory.getUserDao().selectAllWasherManInBoxWithRate(carWashId, orderForm.getBoxNumber());
+
+        Map<Integer, BigDecimal> washerManIdWithSalaryForOrder = getWasherManIdWithSalary(budgetForSale, washerManInBoxSet, orderId);
+
+        for (Map.Entry entry : washerManIdWithSalaryForOrder.entrySet()){
+            daoFactory.getOrderDao().insertWasherManInOrder((Integer) entry.getKey(), (BigDecimal)entry.getValue(), orderId);
         }
+
+    }
+
+    private Map<Integer, BigDecimal> getWasherManIdWithSalary(BigDecimal budgetForSale,
+                                                              Set<WasherManInBoxWithRate> washerManInBoxSet,
+
+                                                              Integer orderId) {
+        Integer amountOfWasherMans = washerManInBoxSet.size();
+        Map<Integer, BigDecimal>  washerManIdWithSalary = new HashMap<>(amountOfWasherMans);
+        Boolean isItDayOrder = daoFactory.getOrderDao().isItDayOrder(orderId);
+        BigDecimal trainerBudget = new BigDecimal(0);
+        List<Integer> trainerListId = new ArrayList<>(amountOfWasherMans);
+
+        BigDecimal avgSalaryPerPerson = budgetForSale.divide(BigDecimal.valueOf(amountOfWasherMans));
+
+        for (WasherManInBoxWithRate w : washerManInBoxSet){
+            Integer manFee;
+            if (isItDayOrder){
+                manFee = w.getDayCommission();
+            }else {
+                manFee = w.getNightCommission();
+            }
+
+            if (manFee < 100) {
+                washerManIdWithSalary.put(w.getId(),
+                        avgSalaryPerPerson.multiply(BigDecimal.valueOf(manFee)).divide(BigDecimal.valueOf(100)));
+
+                trainerBudget.add(avgSalaryPerPerson.multiply(BigDecimal.valueOf(100-manFee)).divide(BigDecimal.valueOf(100)));
+            }else {
+                trainerListId.add(w.getId());
+                if (manFee == 100){
+                    washerManIdWithSalary.put(w.getId(), avgSalaryPerPerson);
+                }else {
+                    washerManIdWithSalary.put(w.getId(),
+                            avgSalaryPerPerson.add(avgSalaryPerPerson.multiply(BigDecimal.valueOf(manFee-100)).divide(BigDecimal.valueOf(100))));
+                }
+
+            }
+
+        }
+
+        if (trainerBudget.compareTo(new BigDecimal(0)) != 0) {
+            BigDecimal additionFee = trainerBudget.divide(BigDecimal.valueOf(trainerListId.size()));
+
+            for (Integer id: trainerListId){
+                BigDecimal finalSalary = washerManIdWithSalary.get(id);
+                finalSalary = finalSalary.add(additionFee);
+                washerManIdWithSalary.put(id, finalSalary);
+            }
+
+        }
+
+        return washerManIdWithSalary;
     }
 
     private void insertOrderedServices(OrderForm orderForm, Integer orderId) {
