@@ -44,4 +44,6 @@ public interface OrderDao {
     BigDecimal getSalaryForOrder(Integer id);
 
     Boolean isItDayOrder(Integer id);
+
+    void deleteWasherManInOrder(Integer orderId);
 }

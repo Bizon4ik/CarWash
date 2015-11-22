@@ -97,8 +97,14 @@ public class OrderServiceImpl implements OrderService {
         updateBoxInOrder(orderId, finalOrderForm.getBoxNumber());
         deleteServicesInOrder(orderId);
         insertOrderedServices(finalOrderForm, orderId);
+        deleteGangInOrder(orderId);
+        insertGangInOrder(finalOrderForm, finalOrderForm.getCarWashId(), orderId);
 
 
+    }
+
+    private void deleteGangInOrder(Integer orderId) {
+        daoFactory.getOrderDao().deleteWasherManInOrder(orderId);
     }
 
     @Override
@@ -314,7 +320,8 @@ public class OrderServiceImpl implements OrderService {
                 washerManIdWithSalary.put(w.getId(),
                         avgSalaryPerPerson.multiply(BigDecimal.valueOf(manFee)).divide(BigDecimal.valueOf(100)));
 
-                trainerBudget.add(avgSalaryPerPerson.multiply(BigDecimal.valueOf(100-manFee)).divide(BigDecimal.valueOf(100)));
+                trainerBudget = trainerBudget.add(avgSalaryPerPerson.multiply(BigDecimal.valueOf(100-manFee)).divide(BigDecimal.valueOf(100)));
+
             }else {
                 trainerListId.add(w.getId());
                 if (manFee == 100){
@@ -328,10 +335,12 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
+
         if (trainerBudget.compareTo(new BigDecimal(0)) != 0) {
             BigDecimal additionFee = trainerBudget.divide(BigDecimal.valueOf(trainerListId.size()));
 
             for (Integer id: trainerListId){
+                System.out.println("id = " + id);
                 BigDecimal finalSalary = washerManIdWithSalary.get(id);
                 finalSalary = finalSalary.add(additionFee);
                 washerManIdWithSalary.put(id, finalSalary);

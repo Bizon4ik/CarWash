@@ -633,7 +633,7 @@ public class OrderDaoImpl implements OrderDao{
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
-                result = false;
+                result = true;
 
             }
 
@@ -758,5 +758,42 @@ public class OrderDaoImpl implements OrderDao{
                 throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе isItDayOrder (OrderDaoImpl) " + e);
             }
         }
+    }
+
+    @Override
+    public void deleteWasherManInOrder(Integer orderId) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+
+        try {
+            connection = connectionDB.getConnection();
+
+            String query = "DELETE FROM " + WASHER_MAN_IN_ORDER_TABLE +
+                    " WHERE order_id = ? ";
+
+            ps = connection.prepareStatement(query);
+
+            ps.setInt(1, orderId);
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new SQLRuntimeException("SQL exception в методе deleteWasherManInOrder (OrderDaoImpl) " + e);
+        } catch (NamingException e) {
+            throw new NamingRuntimeException("Naming exception в методе deleteWasherManInOrder (OrderDaoImpl) " + e);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+
+                if (connection != null) {
+                    connection.close();
+                }
+            }catch (SQLException e) {
+                throw new SQLRuntimeException("SQL exception,  Cannot close connection or PreparedStatement, в методе deleteWasherManInOrder (OrderDaoImpl) " + e);
+            }
+        }
+
     }
 }

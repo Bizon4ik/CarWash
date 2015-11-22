@@ -1,19 +1,15 @@
 package biz.podoliako.carwash;
 
 
+import java.math.BigDecimal;
+
 public class test {
 
-    private Integer data = 1;
-
-    public class abc {
-
-        public Integer data;
-
-        public abc(Integer data) {
-            this.data = data;
-            test.this.data = data;
-
-        }
+    public static void main(String[] args) {
+        BigDecimal a = new BigDecimal(0);
+        System.out.println(a);
+        a.add(new BigDecimal(5));
+        System.out.println(a);
     }
 
 }

@@ -106,6 +106,10 @@ sup {
 	font-size: 1.0em;
 }
 
+.bold {
+	font-weight: 600;
+}
+
 .table th {
 	font-weight: 600;
 }

@@ -2,6 +2,7 @@ package biz.podoliako.carwash.dao;
 
 import biz.podoliako.carwash.models.entity.CarWashService;
 import biz.podoliako.carwash.models.entity.ServiceName;
+import biz.podoliako.carwash.view.GeneralStatInBox;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -31,4 +32,5 @@ public interface ServiceDao {
     List<CarWashService> selectAllCarWashServiceByCategory(Integer categoryId, Integer carWashIdInt, Integer carWashOwnerId) throws SQLException;
 
     void deleteCarWashService(Date dateOfDelete, Integer serviceId, Integer carWashOwnerId) throws SQLException;
+
 }

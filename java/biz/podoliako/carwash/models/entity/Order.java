@@ -18,7 +18,6 @@ public class Order {
     private Date dateOfClose;
     private Date dateOfDelete;
 
-
     public Integer getId() {
         return id;
     }

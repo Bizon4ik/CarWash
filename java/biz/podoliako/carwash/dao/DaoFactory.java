@@ -9,6 +9,7 @@ public interface DaoFactory {
     public CarBrandDao getCarBrandDao();
     public OrderDao getOrderDao();
     public ClientCarDao getClientCarDao();
+    public StatisticDao getStatisticDao();
 
 
 
